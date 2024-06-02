@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, InsertResult, Repository } from 'typeorm';
 import { Lessons } from '../../entites/lessons';
 import { Lessons_students } from '../../entites/lessons_students';
 
@@ -56,7 +56,12 @@ export class LessonsRepository {
 
     return await query.getManyAndCount();
   }
-  async createLessons(lessons: Lessons[]): Promise<Lessons[] | null> {
-    return await this.lessonsRepository.save(lessons);
+  async createLessons(lessons: Lessons[]): Promise<InsertResult> {
+    return await this.lessonsRepository
+      .createQueryBuilder('lessons')
+      .insert()
+      .values(lessons)
+      .returning('id')
+      .execute();
   }
 }

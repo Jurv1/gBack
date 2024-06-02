@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LessonsRepository } from './lessons.repository';
 import { Lessons } from '../../entites/lessons';
 import { LessonCreateDto } from '../../dto/lesson.create.dto';
+import { InsertResult } from 'typeorm';
 
 @Injectable()
 export class LessonsService {
@@ -11,7 +12,7 @@ export class LessonsService {
     return await this.lessonRepository;
   }
 
-  async createLessons(lessonsDto: LessonCreateDto): Promise<Lessons[] | null> {
+  async createLessons(lessonsDto: LessonCreateDto): Promise<InsertResult> {
     const lessons: Lessons[] = [];
     const date = new Date(lessonsDto.firstDate);
     let count = 0;
