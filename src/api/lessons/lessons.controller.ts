@@ -1,17 +1,22 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { LessonsService } from '../../infrastructure/lessons/lessons.service';
+import { LessonsQueryParams } from '../../dto/lessons.query.params';
+import { filterForLessons } from '../../utils/filter.for.lessons';
+import { LessonCreateDto } from '../../dto/lesson.create.dto';
 
 @Controller('/')
 export class LessonsController {
   constructor(private readonly lessonsService: LessonsService) {}
 
   @Get()
-  async getAllLessons() {
-    return this.lessonsService;
+  async getAllLessons(@Query() query: LessonsQueryParams) {
+    const filter = filterForLessons(query);
+
+    return 'Kek';
   }
 
   @Post('/lessons')
-  async createLessons() {
-    return this.lessonsService;
+  async createLessons(@Body() lessonsCreationDto: LessonCreateDto) {
+    return this.lessonsService.createLessons(lessonsCreationDto);
   }
 }

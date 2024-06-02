@@ -2,8 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Lessons } from './lessons';
 
 @Entity()
 export class Teachers {
@@ -15,4 +18,8 @@ export class Teachers {
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
+
+  @ManyToOne(() => Lessons, (lesson) => lesson.teacher)
+  @JoinColumn()
+  lesson: Lessons;
 }

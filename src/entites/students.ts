@@ -2,8 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Lessons_students } from './lessons_students';
 
 @Entity()
 export class Students {
@@ -15,4 +17,7 @@ export class Students {
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
+
+  @OneToMany(() => Lessons_students, (attendance) => attendance.student)
+  attendances: Lessons_students[];
 }

@@ -6,27 +6,28 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Teachers } from './teachers';
+import { Lessons_students } from './lessons_students';
 
 @Entity()
 export class Lessons {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({ type: 'varchar', length: 100 })
   title: string;
 
-  @Column({ type: 'varchar', length: 100 })
-  shortDescription: string;
+  @Column({ type: 'char' })
+  status: 1 | 0;
 
-  @Column({ type: 'varchar', length: 1000 })
-  content: string;
-
-  @Column({ type: 'char', default: 0 })
-  userStatus: boolean;
+  @Column({ type: 'varchar' })
+  date: string;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @OneToMany(() => Teachers, (teacher) => teacher.id)
+  @OneToMany(() => Teachers, (teacher) => teacher.lesson)
   teacher: Teachers[];
+
+  @OneToMany(() => Lessons_students, (attendance) => attendance.lesson)
+  attendances?: Lessons_students[];
 }
