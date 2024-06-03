@@ -42,7 +42,7 @@ export class LessonsController {
     return this.lessonsService.getAllLessons(filter);
   }
 
-  @Post('')
+  @Post('/lessons')
   async createLessons(@Body() lessonsCreationDto: LessonCreateDto) {
     return await this.lessonsService.createLessons(lessonsCreationDto);
   }

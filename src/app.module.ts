@@ -17,13 +17,14 @@ import { TeacherController } from './api/teachers/teacher.controller';
 
 export const options: TypeOrmModuleOptions = {
   type: 'postgres',
-  host: 'localhost',
+  host: process.env.NEON_HOST,
   port: 5432,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME_FOR_ENTITIES,
+  username: process.env.NEON_USERNAME,
+  password: process.env.NEON_PASS,
+  database: process.env.NEON_NAME_FOR_ENTITIES,
   autoLoadEntities: true,
   synchronize: true,
+  ssl: true,
 };
 
 @Module({
