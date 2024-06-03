@@ -36,6 +36,10 @@ export class LessonsController {
     description: 'пагинация',
     required: false,
   })
+  @ApiQuery({
+    name: 'studentsCount',
+    required: false,
+  })
   async getAllLessons(@Query() query?: LessonsQueryParams) {
     const filter = filterForLessons(query);
 
