@@ -17,7 +17,6 @@ export class LessonsController {
 
   @Post('/lessons')
   async createLessons(@Body() lessonsCreationDto: LessonCreateDto) {
-    const result = await this.lessonsService.createLessons(lessonsCreationDto);
-    return result['identifiers'];
+    return await this.lessonsService.createLessons(lessonsCreationDto);
   }
 }

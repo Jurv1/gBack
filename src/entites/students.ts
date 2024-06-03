@@ -19,5 +19,5 @@ export class Students {
   createdAt: Date;
 
   @OneToMany(() => Lessons_students, (attendance) => attendance.students)
-  attendances: Lessons_students[];
+  lessonsStudents: Lessons_students[];
 }

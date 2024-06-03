@@ -10,9 +10,9 @@ import { LessonsRepository } from './infrastructure/lessons/lessons.repository';
 import { Lessons } from './entites/lessons';
 import { Students } from './entites/students';
 import { Teachers } from './entites/teachers';
-import { Lessons_students } from './entites/lessons_students';
 import { TeachersRepository } from './infrastructure/teachers/teachers.repository';
 import { IsTeachersExists } from './utils/is.teachers.exists';
+import { Lessons_students } from './entites/lessons_students';
 
 export const options: TypeOrmModuleOptions = {
   type: 'postgres',

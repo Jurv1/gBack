@@ -2,6 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -11,12 +13,12 @@ import { Lessons_students } from './lessons_students';
 @Entity()
 export class Lessons {
   @PrimaryGeneratedColumn()
-  id?: number;
+  id: number;
 
   @Column({ type: 'varchar', length: 100 })
   title: string;
 
-  @Column({ type: 'char' })
+  @Column({ type: 'boolean' })
   status: 1 | 0;
 
   @Column({ type: 'varchar' })
@@ -25,9 +27,13 @@ export class Lessons {
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @OneToMany(() => Teachers, (teacher) => teacher.lesson)
+  @ManyToMany(() => Teachers, (teacher) => teacher.lessons, { cascade: true })
+  @JoinTable()
   teachers: Teachers[];
 
-  @OneToMany(() => Lessons_students, (students) => students.lesson)
-  students?: Lessons_students[];
+  @OneToMany(
+    () => Lessons_students,
+    (lessonsStudents) => lessonsStudents.lesson,
+  )
+  students: Lessons_students[];
 }

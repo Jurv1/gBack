@@ -17,7 +17,7 @@ export class Lessons_students {
   @JoinColumn({ name: 'lesson_id' })
   lesson: Lessons;
 
-  @ManyToOne(() => Students, (student) => student.attendances)
+  @ManyToOne(() => Students, (student) => student.lessonsStudents)
   @JoinColumn({ name: 'student_id' })
   students: Students;
 

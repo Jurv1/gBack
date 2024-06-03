@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsString,
   Length,
+  ValidateIf,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { Optional } from '@nestjs/common';
@@ -30,6 +31,7 @@ export class LessonCreateDto {
   @IsDate()
   firstDate: string; // Первая дата, от которой нужно создавать занятия
 
+  @ValidateIf((o) => o.otherProperty === 'value')
   @Optional()
   @Type(() => Number)
   @IsNumber()

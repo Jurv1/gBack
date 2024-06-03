@@ -22,6 +22,16 @@ export class TeachersRepository {
     });
 
     if (result.length == 0) throw new Errors.NOT_FOUND();
-    return true;
+    return result;
+  }
+
+  async findTeachersForLessons(ids: number[]) {
+    const result = await this.teachersRepository
+      .createQueryBuilder('t')
+      .where('t.id IN (:...teachers)', { teachers: ids })
+      .getMany();
+
+    if (result.length == 0) throw new Errors.NOT_FOUND();
+    return result;
   }
 }

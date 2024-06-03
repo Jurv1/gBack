@@ -2,8 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Lessons } from './lessons';
@@ -19,7 +18,6 @@ export class Teachers {
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @ManyToOne(() => Lessons)
-  @JoinColumn({ name: 'lesson_id', referencedColumnName: 'id' })
-  lesson: Lessons;
+  @ManyToMany(() => Lessons, (lessons) => lessons.teachers)
+  lessons: Lessons[];
 }

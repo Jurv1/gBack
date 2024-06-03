@@ -1,13 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import {
-  DataSource,
-  InsertResult,
-  Repository,
-  SelectQueryBuilder,
-} from 'typeorm';
+import { DataSource, Repository, SelectQueryBuilder } from 'typeorm';
 import { Lessons } from '../../entites/lessons';
-import { Lessons_students } from '../../entites/lessons_students';
 import { queryAdder } from '../../utils/query.adder';
 
 @Injectable()
@@ -16,8 +10,6 @@ export class LessonsRepository {
     @InjectDataSource() private readonly dataSource: DataSource,
     @InjectRepository(Lessons)
     private readonly lessonsRepository: Repository<Lessons>,
-    @InjectRepository(Lessons_students)
-    private readonly lessonsStudentsRepo: Repository<Lessons_students>,
   ) {}
 
   async getAllLessons(filter: {
@@ -41,12 +33,11 @@ export class LessonsRepository {
 
     return query.getMany();
   }
-  async createLessons(lessons: Lessons[]): Promise<InsertResult> {
-    return await this.lessonsRepository
-      .createQueryBuilder('lessons')
-      .insert()
-      .values(lessons)
-      .returning('id')
-      .execute();
+  async createLessons(lessons: Partial<Lessons>[]) {
+    return await this.lessonsRepository.save(lessons, {}).then((value) =>
+      value.map((el) => {
+        return { id: el.id };
+      }),
+    );
   }
 }
