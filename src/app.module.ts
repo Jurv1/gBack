@@ -12,6 +12,7 @@ import { Students } from './entites/students';
 import { Teachers } from './entites/teachers';
 import { Lessons_students } from './entites/lessons_students';
 import { TeachersRepository } from './infrastructure/teachers/teachers.repository';
+import { IsTeachersExists } from './utils/is.teachers.exists';
 
 export const options: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -36,6 +37,7 @@ export const options: TypeOrmModuleOptions = {
     LessonsService,
     LessonsRepository,
     TeachersRepository,
+    IsTeachersExists,
   ],
 })
 export class AppModule {}

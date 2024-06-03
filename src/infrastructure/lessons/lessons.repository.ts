@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import {
   DataSource,
-  In,
   InsertResult,
   Repository,
   SelectQueryBuilder,
@@ -10,8 +9,6 @@ import {
 import { Lessons } from '../../entites/lessons';
 import { Lessons_students } from '../../entites/lessons_students';
 import { queryAdder } from '../../utils/query.adder';
-import { Teachers } from '../../entites/teachers';
-import { Errors } from '../../utils/handle.error';
 
 @Injectable()
 export class LessonsRepository {
@@ -21,22 +18,11 @@ export class LessonsRepository {
     private readonly lessonsRepository: Repository<Lessons>,
     @InjectRepository(Lessons_students)
     private readonly lessonsStudentsRepo: Repository<Lessons_students>,
-    @InjectRepository(Teachers)
-    private readonly teachersRepo: Repository<Teachers>,
   ) {}
 
   async getAllLessons(filter: {
     [key: string]: string | number | number[] | Date;
   }) {
-    if (filter['teachers']) {
-      console.log(filter['teachers']);
-      const result = await this.teachersRepo.find({
-        where: { id: In(filter['teachers'] as number[]) },
-        select: ['id'],
-      });
-      if (result.length == 0) throw new Errors.NOT_FOUND();
-    }
-
     let query: SelectQueryBuilder<Lessons> = this.lessonsRepository
       .createQueryBuilder('l')
       .leftJoinAndSelect('l.teachers', 't')

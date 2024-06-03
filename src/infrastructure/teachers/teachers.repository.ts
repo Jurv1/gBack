@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import { Teachers } from '../../entites/teachers';
+import { Errors } from '../../utils/handle.error';
+import { errorIfNan } from '../../utils/is.nan';
 
 @Injectable()
 export class TeachersRepository {
@@ -10,4 +12,16 @@ export class TeachersRepository {
     @InjectRepository(Teachers)
     private readonly teachersRepository: Repository<Teachers>,
   ) {}
+
+  async findTeachers(ids: string[]) {
+    errorIfNan(...ids);
+
+    const result = await this.teachersRepository.find({
+      where: { id: In(ids) },
+      select: ['id'],
+    });
+
+    if (result.length == 0) throw new Errors.NOT_FOUND();
+    return true;
+  }
 }
