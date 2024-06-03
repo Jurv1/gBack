@@ -11,6 +11,7 @@ import { Lessons } from './entites/lessons';
 import { Students } from './entites/students';
 import { Teachers } from './entites/teachers';
 import { Lessons_students } from './entites/lessons_students';
+import { TeachersRepository } from './infrastructure/teachers/teachers.repository';
 
 export const options: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -30,6 +31,11 @@ export const options: TypeOrmModuleOptions = {
     TypeOrmModule.forFeature([Lessons, Students, Teachers, Lessons_students]),
   ],
   controllers: [AppController, LessonsController],
-  providers: [AppService, LessonsService, LessonsRepository],
+  providers: [
+    AppService,
+    LessonsService,
+    LessonsRepository,
+    TeachersRepository,
+  ],
 })
 export class AppModule {}

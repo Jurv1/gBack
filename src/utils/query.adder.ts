@@ -11,14 +11,14 @@ export function queryAdder(query: SelectQueryBuilder<Lessons>, filter) {
 
   if (filter['teachers']) {
     query.andWhere('t.id IN (:...teachers)', {
-      teachers: [filter['teachers']],
+      teachers: filter['teachers'],
     });
   }
 
-  if (filter['studentsCount']) {
-    query.having('COUNT(s.id) <= :fromSt AND COUNT(s.id) >= :toSt', {
-      fromSt: filter['studentsCount'],
-      toSt: filter['studentsCount'],
+  if (filter['fromSt']) {
+    query.having(' COUNT(s.id) BETWEEN :fromSt AND :toSt', {
+      fromSt: filter['fromSt'],
+      toSt: filter['toSt'],
     });
   }
 
@@ -27,11 +27,11 @@ export function queryAdder(query: SelectQueryBuilder<Lessons>, filter) {
   }
 
   if (filter['offset']) {
-    query.offset(filter['offset'] as number);
+    query.skip(+filter['offset']);
   }
 
   if (filter['limit']) {
-    query.take(filter['limit'] as number);
+    query.take(filter['limit']);
   }
 
   return query;

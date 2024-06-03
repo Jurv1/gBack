@@ -3,7 +3,6 @@ import { LessonsRepository } from './lessons.repository';
 import { Lessons } from '../../entites/lessons';
 import { LessonCreateDto } from '../../dto/lesson.create.dto';
 import { InsertResult } from 'typeorm';
-import { Teachers } from '../../entites/teachers';
 
 @Injectable()
 export class LessonsService {
@@ -23,13 +22,12 @@ export class LessonsService {
       (lessonsDto.lessonsCount && count <= lessonsDto.lessonsCount) ||
       (lessonsDto.lastDate && date <= new Date(lessonsDto.lastDate))
     ) {
-      console.log(lessonsDto.days.includes(date.getDay()));
       if (lessonsDto.days.includes(date.getDay())) {
         const lesson: Lessons = {
           title: lessonsDto.title,
           date: date.toISOString().substring(0, 10),
           // @ts-ignore
-          teachers: lessonsDto.teacherIds as Teachers[],
+          teachers: lessonsDto.teacherIds,
           status: 0,
           createdAt: date,
         };

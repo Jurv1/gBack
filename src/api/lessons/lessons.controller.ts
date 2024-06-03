@@ -9,7 +9,7 @@ export class LessonsController {
   constructor(private readonly lessonsService: LessonsService) {}
 
   @Get()
-  async getAllLessons(@Query() query: LessonsQueryParams) {
+  async getAllLessons(@Query() query?: LessonsQueryParams) {
     const filter = filterForLessons(query);
 
     return this.lessonsService.getAllLessons(filter);
