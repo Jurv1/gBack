@@ -16,10 +16,15 @@ export function queryAdder(query: SelectQueryBuilder<Lessons>, filter) {
   }
 
   if (filter['fromSt']) {
-    query.having(' COUNT(s.id) BETWEEN :fromSt AND :toSt', {
-      fromSt: filter['fromSt'],
-      toSt: filter['toSt'],
-    });
+    //Я пытався
+    if (filter['fromSt'] == 0 && filter['toSt'] == 0) {
+      query.andWhere('ls.id IS NULL');
+    } else {
+      query.having(' COUNT(s.id) BETWEEN :fromSt AND :toSt', {
+        fromSt: filter['fromSt'],
+        toSt: filter['toSt'],
+      });
+    }
   }
 
   if (filter['visit']) {

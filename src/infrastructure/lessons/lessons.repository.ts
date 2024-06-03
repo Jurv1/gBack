@@ -18,13 +18,12 @@ export class LessonsRepository {
     let query: SelectQueryBuilder<Lessons> = this.lessonsRepository
       .createQueryBuilder('l')
       //Здесь как будто релейшен не в ту сторону - так как к student прикрепляется еще сту
-      .leftJoinAndSelect('l.students', 'ls')
-      .leftJoinAndSelect('ls.students', 's')
       .leftJoinAndSelect('l.teachers', 't')
-
+      .leftJoinAndSelect('l.students', 's')
+      .leftJoinAndSelect('s.students', 'ls')
       //Вот эта штука не хочет работать без getRawMany как не пытался
       .addSelect(
-        'COUNT(CASE WHEN ls.visit = true THEN 1 ELSE NULL END) AS visitCount',
+        'COUNT(CASE WHEN s.visit = true THEN 1 ELSE NULL END)',
         'visitCount',
       )
       .select([
@@ -35,12 +34,13 @@ export class LessonsRepository {
         't.id',
         't.name',
         's.id',
-        's.name',
-        'ls.visit',
+        's.visit',
+        'ls.name',
       ])
-      .groupBy(' l.id, t.id,  ls.id, s.id, s.name')
+      .groupBy(' l.id, t.id,  s.id, ls.id')
       .orderBy('l.id');
 
+    console.log(filter);
     query = queryAdder(query, filter);
 
     console.log(query.getQuery());

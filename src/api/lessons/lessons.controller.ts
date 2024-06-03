@@ -38,6 +38,8 @@ export class LessonsController {
   })
   @ApiQuery({
     name: 'studentsCount',
+    type: 'string',
+    description: 'формат 1,2',
     required: false,
   })
   async getAllLessons(@Query() query?: LessonsQueryParams) {
