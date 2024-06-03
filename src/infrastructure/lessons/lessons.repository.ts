@@ -17,14 +17,28 @@ export class LessonsRepository {
   }) {
     let query: SelectQueryBuilder<Lessons> = this.lessonsRepository
       .createQueryBuilder('l')
+      //Здесь как будто релейшен не в ту сторону - так как к student прикрепляется еще сту
+      .leftJoinAndSelect('l.students', 'ls')
+      .leftJoinAndSelect('ls.students', 's')
       .leftJoinAndSelect('l.teachers', 't')
-      .leftJoinAndSelect('l.students', 's')
-      .leftJoinAndSelect('s.students', 'ls')
+
+      //Вот эта штука не хочет работать без getRawMany как не пытался
       .addSelect(
-        'COUNT(CASE WHEN s.visit = true THEN 1 ELSE NULL END)',
+        'COUNT(CASE WHEN ls.visit = true THEN 1 ELSE NULL END) AS visitCount',
         'visitCount',
       )
-      .groupBy(' l.id, t.id, s.id, ls.id')
+      .select([
+        'l.id',
+        'l.status',
+        'l.title',
+        'l.date',
+        't.id',
+        't.name',
+        's.id',
+        's.name',
+        'ls.visit',
+      ])
+      .groupBy(' l.id, t.id,  ls.id, s.id, s.name')
       .orderBy('l.id');
 
     query = queryAdder(query, filter);
@@ -33,6 +47,7 @@ export class LessonsRepository {
 
     return query.getMany();
   }
+
   async createLessons(lessons: Partial<Lessons>[]) {
     return await this.lessonsRepository.save(lessons, {}).then((value) =>
       value.map((el) => {

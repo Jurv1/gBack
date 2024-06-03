@@ -13,6 +13,7 @@ import { Teachers } from './entites/teachers';
 import { TeachersRepository } from './infrastructure/teachers/teachers.repository';
 import { IsTeachersExists } from './utils/is.teachers.exists';
 import { Lessons_students } from './entites/lessons_students';
+import { TeacherController } from './api/teachers/teacher.controller';
 
 export const options: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -31,7 +32,7 @@ export const options: TypeOrmModuleOptions = {
     TypeOrmModule.forRoot(options),
     TypeOrmModule.forFeature([Lessons, Students, Teachers, Lessons_students]),
   ],
-  controllers: [AppController, LessonsController],
+  controllers: [AppController, LessonsController, TeacherController],
   providers: [
     AppService,
     LessonsService,

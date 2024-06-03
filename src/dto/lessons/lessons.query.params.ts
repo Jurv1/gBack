@@ -1,5 +1,4 @@
-import { IsTeachersExist } from '../utils/is.teachers.exists';
-import { Optional } from '@nestjs/common';
+import { IsTeachersExist } from '../../utils/is.teachers.exists';
 import { ValidateIf } from 'class-validator';
 
 export class LessonsQueryParams {

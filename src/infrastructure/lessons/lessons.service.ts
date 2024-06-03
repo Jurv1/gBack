@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LessonsRepository } from './lessons.repository';
 import { Lessons } from '../../entites/lessons';
-import { LessonCreateDto } from '../../dto/lesson.create.dto';
+import { LessonCreateDto } from '../../dto/lessons/lesson.create.dto';
 import { Errors } from '../../utils/handle.error';
 import { TeachersRepository } from '../teachers/teachers.repository';
 

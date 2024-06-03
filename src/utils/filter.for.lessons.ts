@@ -1,4 +1,4 @@
-import { LessonsQueryParams } from '../dto/lessons.query.params';
+import { LessonsQueryParams } from '../dto/lessons/lessons.query.params';
 import { format } from 'date-fns';
 import { errorIfNan } from './is.nan';
 import { idsChecker } from './ids.checker';

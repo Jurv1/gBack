@@ -5,9 +5,8 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TeachersRepository } from '../infrastructure/teachers/teachers.repository';
-import { Teachers } from '../entites/teachers';
 
 @ValidatorConstraint({ name: 'IsTeachersExists', async: true })
 @Injectable()

@@ -4,6 +4,7 @@ import { DataSource, In, Repository } from 'typeorm';
 import { Teachers } from '../../entites/teachers';
 import { Errors } from '../../utils/handle.error';
 import { errorIfNan } from '../../utils/is.nan';
+import { TeacherCreationDto } from '../../dto/teacher/teacher.creation.dto';
 
 @Injectable()
 export class TeachersRepository {
@@ -33,5 +34,11 @@ export class TeachersRepository {
 
     if (result.length == 0) throw new Errors.NOT_FOUND();
     return result;
+  }
+
+  async createTeacher(teacherCreationDto: TeacherCreationDto) {
+    const teacher = new Teachers();
+    teacher.name = teacherCreationDto.name;
+    return await this.teachersRepository.save(teacher);
   }
 }
