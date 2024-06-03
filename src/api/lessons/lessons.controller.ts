@@ -12,7 +12,7 @@ export class LessonsController {
   async getAllLessons(@Query() query: LessonsQueryParams) {
     const filter = filterForLessons(query);
 
-    return 'Kek';
+    return this.lessonsService.getAllLessons(filter);
   }
 
   @Post('/lessons')

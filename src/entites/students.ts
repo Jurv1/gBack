@@ -18,6 +18,6 @@ export class Students {
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @OneToMany(() => Lessons_students, (attendance) => attendance.student)
+  @OneToMany(() => Lessons_students, (attendance) => attendance.students)
   attendances: Lessons_students[];
 }

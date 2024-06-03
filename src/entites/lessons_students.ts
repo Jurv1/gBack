@@ -13,14 +13,14 @@ export class Lessons_students {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Lessons, (lesson) => lesson.attendances)
+  @ManyToOne(() => Lessons, (lesson) => lesson.students)
   @JoinColumn({ name: 'lesson_id' })
   lesson: Lessons;
 
   @ManyToOne(() => Students, (student) => student.attendances)
   @JoinColumn({ name: 'student_id' })
-  student: Students;
+  students: Students;
 
-  @Column({ type: 'char' })
-  visit: 1 | 0;
+  @Column({ type: 'bool', default: false })
+  visit: boolean;
 }

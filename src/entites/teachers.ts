@@ -19,7 +19,7 @@ export class Teachers {
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
-  @ManyToOne(() => Lessons, (lesson) => lesson.teacher)
-  @JoinColumn()
+  @ManyToOne(() => Lessons)
+  @JoinColumn({ name: 'lesson_id', referencedColumnName: 'id' })
   lesson: Lessons;
 }

@@ -3,13 +3,16 @@ import { LessonsRepository } from './lessons.repository';
 import { Lessons } from '../../entites/lessons';
 import { LessonCreateDto } from '../../dto/lesson.create.dto';
 import { InsertResult } from 'typeorm';
+import { Teachers } from '../../entites/teachers';
 
 @Injectable()
 export class LessonsService {
   constructor(protected lessonRepository: LessonsRepository) {}
 
-  async getAllLessons(filter: { [key: string]: string | number | number[] }) {
-    return await this.lessonRepository;
+  async getAllLessons(filter: {
+    [key: string]: string | number | number[] | Date;
+  }) {
+    return await this.lessonRepository.getAllLessons(filter);
   }
 
   async createLessons(lessonsDto: LessonCreateDto): Promise<InsertResult> {
@@ -24,9 +27,9 @@ export class LessonsService {
       if (lessonsDto.days.includes(date.getDay())) {
         const lesson: Lessons = {
           title: lessonsDto.title,
-          date: date.toISOString(),
-          //@ts-ignore
-          teacher: lessonsDto.teacherIds,
+          date: date.toISOString().substring(0, 10),
+          // @ts-ignore
+          teachers: lessonsDto.teacherIds as Teachers[],
           status: 0,
           createdAt: date,
         };

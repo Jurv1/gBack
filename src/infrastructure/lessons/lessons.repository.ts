@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, InsertResult, Repository } from 'typeorm';
+import {
+  DataSource,
+  InsertResult,
+  Repository,
+  SelectQueryBuilder,
+} from 'typeorm';
 import { Lessons } from '../../entites/lessons';
 import { Lessons_students } from '../../entites/lessons_students';
+import { queryAdder } from '../../utils/query.adder';
 
 @Injectable()
 export class LessonsRepository {
@@ -14,47 +20,27 @@ export class LessonsRepository {
     private readonly lessonsStudentsRepo: Repository<Lessons_students>,
   ) {}
 
-  async getAllLessons(filter: { [key: string]: string | number | number[] }) {
-    const query = this.lessonsStudentsRepo
-      .createQueryBuilder('ls')
-      .leftJoinAndSelect('ls.lessons', 'lesson')
-      .leftJoinAndSelect('ls.students', 'student')
-      .addSelect('COUNT(student.id) AS studentsCount')
-      .leftJoinAndSelect('lesson.teacher', 'teacher');
-    // const query = this.lessonsRepository.createQueryBuilder('lessons');
-    if (filter['fromDate']) {
-      query.andWhere('lesson.date >= :fromDate', {
-        fromDate: filter['fromDate'],
-      });
-      query.andWhere('lesson.date <= :toDate', { toDate: filter['toDate'] });
-    }
+  async getAllLessons(filter: {
+    [key: string]: string | number | number[] | Date;
+  }) {
+    let query: SelectQueryBuilder<Lessons> = this.lessonsRepository
+      .createQueryBuilder('l')
+      .leftJoinAndSelect('l.teachers', 't')
+      .leftJoinAndSelect('l.students', 's')
+      .leftJoinAndSelect('s.students', 'ls')
+      .addSelect(
+        'COUNT(CASE WHEN s.visit = true THEN 1 ELSE NULL END)',
+        'visitCount',
+      )
+      .groupBy(' l.id, s.id, ls.id')
+      .addGroupBy('t.id')
+      .orderBy('l.id');
 
-    if (filter['teachers']) {
-      query.andWhere('lesson.teacher IN :teachers', {
-        teachers: filter['teachers'],
-      });
-    }
+    query = queryAdder(query, filter);
 
-    if (filter['studentsCount']) {
-      query.andWhere('studentsCount <= :fromSt AND studentsCount >= :toSt', {
-        fromSt: filter,
-        toSt: filter,
-      });
-    }
+    console.log(query.getQuery());
 
-    if (filter['visit']) {
-      query.andWhere('ls.visit = :visit', { visit: filter['visit'] });
-    }
-
-    if (filter['offset']) {
-      query.offset(filter['offset'] as number);
-    }
-
-    if (filter['limit']) {
-      query.limit(filter['limit'] as number);
-    }
-
-    return await query.getManyAndCount();
+    return query.getMany();
   }
   async createLessons(lessons: Lessons[]): Promise<InsertResult> {
     return await this.lessonsRepository

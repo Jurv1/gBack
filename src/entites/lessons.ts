@@ -26,8 +26,8 @@ export class Lessons {
   createdAt: Date;
 
   @OneToMany(() => Teachers, (teacher) => teacher.lesson)
-  teacher: Teachers[];
+  teachers: Teachers[];
 
-  @OneToMany(() => Lessons_students, (attendance) => attendance.lesson)
-  attendances?: Lessons_students[];
+  @OneToMany(() => Lessons_students, (students) => students.lesson)
+  students?: Lessons_students[];
 }
